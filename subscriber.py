@@ -1,4 +1,6 @@
 import paho.mqtt.client as mqtt 
+import yaml
+
 # The callback for when the client receives a response from the server 
 def on_connect(client, userdata, flags, rc):
     print(f"Connected with client code {client}")
@@ -16,7 +18,13 @@ if __name__ ==  '__main__':
     
     client.connect("localhost", port=1883, keepalive=60)
 
-    topic = "/home/computer"
+    with open("config.yaml", "r") as f:
+        try:
+            config_params = (yaml.safe_load(f))
+            topic = config_params['topic']
+        except yaml.YAMLError as e:
+            print(e)
+
     client.subscribe(topic)
 
     client.loop_forever()

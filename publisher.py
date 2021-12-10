@@ -1,13 +1,13 @@
 import paho.mqtt.client as mqtt
 import yaml
 
-with open("config.yaml", "r") as stream:
+with open("config.yaml", "r") as f:
     try:
-        print(yaml.safe_load(stream))
+        config_params = (yaml.safe_load(f))
+        topic = config_params['topic']
     except yaml.YAMLError as e:
         print(e)
 
 client = mqtt.Client()
 client.connect("localhost", 1883, 60)
-topic = "/home/computer"
 client.publish(topic, payload="on")
