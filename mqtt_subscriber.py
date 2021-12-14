@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import time
 import paho.mqtt.client as paho
 from paho import mqtt
+import yaml
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect(client, userdata, flags, rc, properties=None):
@@ -33,6 +33,16 @@ def on_subscribe(client, userdata, mid, granted_qos, properties=None):
 def on_message(client, userdata, msg):
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
 
+with open("config.yaml", "r") as f:
+    try:
+        config_params = (yaml.safe_load(f))
+        cloud_port = config_params['cloud_port']
+        username = config_params['username']
+        password = config_params['password']
+        cluster_name = config_params['cluster_name']
+    except yaml.YAMLError as e:
+        print(e)
+
 # using MQTT version 5 here, for 3.1.1: MQTTv311, 3.1: MQTTv31
 # userdata is user defined data of any type, updated by user_data_set()
 # client_id is the given name of the client
@@ -42,9 +52,9 @@ client.on_connect = on_connect
 # enable TLS for secure connection
 client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
 # set username and password
-client.username_pw_set("username", "password")
+client.username_pw_set(username, password)
 # connect to HiveMQ Cloud on port 8883 (default for MQTT)
-client.connect("cluster_name", 8883)
+client.connect(cluster_name, cloud_port)
 
 # setting callbacks, use separate functions like above for better visibility
 client.on_subscribe = on_subscribe

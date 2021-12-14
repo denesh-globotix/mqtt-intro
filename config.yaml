@@ -1,6 +1,0 @@
-topic: "robot/informationss"
-host: 'localhost'
-port: 1883
-
-# Specific to Publisher 
-message: "Why don't you send?!!!!!!"
