@@ -53,8 +53,10 @@ client.connect(cluster_name, cloud_port)
 client.on_publish = on_publish
 
 # a single publish, this can also be done in loops, etc.
-client.publish("robots/information", payload= cloud_message, qos=1)
+client.publish("robots/information/1", payload= cloud_message, qos=1)
+# client.publish("robots/information/1", payload= "Offline", qos=1)
 
+client.will_set("robots/information", payload="Offline", qos=0, retain=True)
 # loop_forever for simplicity, here you need to stop the loop manually
 # you can also use loop_start and loop_stop
 client.loop_stop()
