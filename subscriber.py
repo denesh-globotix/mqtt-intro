@@ -16,7 +16,7 @@ def on_message(client, userdata, msg):
 
 
 if __name__ == '__main__':
-    client = mqtt.Client()
+    client = mqtt.Client(client_id="mqttx_dae8b4df")
     client.on_connect = on_connect
     client.on_message = on_message
 
@@ -26,10 +26,11 @@ if __name__ == '__main__':
             config_params = (yaml.safe_load(f))
             topic = config_params['topic']
             host = config_params['host']
+            port_number = config_params['port']
         except yaml.YAMLError as e:
             print(e)
-
-    client.connect(host, port=1883, keepalive=60)
+    print(f"The host is {host} and the port is: {port_number}")
+    client.connect(host, port=port_number, keepalive=60)
     client.subscribe(topic)
 
     client.loop_forever()

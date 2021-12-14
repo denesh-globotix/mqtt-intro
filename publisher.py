@@ -7,9 +7,13 @@ with open("config.yaml", "r") as f:
         topic = config_params['topic']
         host = config_params['host']
         message = config_params['message']
+        port = config_params['port']
     except yaml.YAMLError as e:
         print(e)
 
 client = mqtt.Client()
-client.connect(host, 1883, 60)
-client.publish(topic, payload=message, retain=True)
+client.connect(host, port, 60)
+client.publish(topic, payload=message)
+
+# Leads to hanging on the topic if client is not disconnected
+client.disconnect()

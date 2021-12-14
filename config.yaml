@@ -1,5 +1,6 @@
-topic: "/home/computer"
-host: "broker.mqttdashboard.com"
+topic: "robot/informationss"
+host: 'localhost'
+port: 1883
 
 # Specific to Publisher 
-message: "Hello There!"
+message: "Why don't you send?!!!!!!"
