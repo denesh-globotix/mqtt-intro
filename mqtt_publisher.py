@@ -18,12 +18,17 @@ from paho import mqtt
 import yaml
 
 # setting callbacks for different events to see if it works, print the message etc.
+
+
 def on_connect(client, userdata, flags, rc, properties=None):
     print("CONNACK received with code %s." % rc)
 
 # with this callback you can see if your publish was successful
+
+
 def on_publish(client, userdata, mid, properties=None):
     print("mid: " + str(mid))
+
 
 with open("config.yaml", "r") as f:
     try:
@@ -40,6 +45,8 @@ with open("config.yaml", "r") as f:
 # userdata is user defined data of any type, updated by user_data_set()
 # client_id is the given name of the client
 client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
+
+print("trying to connect")
 client.on_connect = on_connect
 
 # enable TLS for secure connection
@@ -53,10 +60,15 @@ client.connect(cluster_name, cloud_port)
 client.on_publish = on_publish
 
 # a single publish, this can also be done in loops, etc.
-client.publish("robots/information/1", payload= cloud_message, qos=1)
-# client.publish("robots/information/1", payload= "Offline", qos=1)
+print("publish to connect")
 
-client.will_set("robots/information", payload="Offline", qos=0, retain=True)
+connect = False
+
+if (connect):
+    client.publish("robots/information/1", payload=cloud_message, qos=1)
+else:
+    client.publish("robots/information/1", payload= "Offline", qos=2)
+# client.will_set("robots/information", payload="Offline", qos=0, retain=True)
 # loop_forever for simplicity, here you need to stop the loop manually
 # you can also use loop_start and loop_stop
-client.loop_stop()
+client.loop_forever()
