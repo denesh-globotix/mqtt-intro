@@ -64,7 +64,7 @@ connect = True
 
 if (connect):
     print("publish to connect")
-    client.publish("robots/information/1", payload=cloud_message, qos=1)
+    client.publish("robots/information/909090", payload=cloud_message, qos=1)
 else:
     print("publish to disconnect")
     client.publish("robots/information/1", payload= "Offline", qos=2)
